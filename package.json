@@ -1,0 +1,44 @@
+{
+  "name": "vscode-esmeta",
+  "displayName": "ESMeta",
+  "description": "VSCode Extension for ESMeta maintainer",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hyp3rflow/vscode-esmeta.git"
+  },
+  "version": "0.0.1",
+  "publisher": "flow",
+  "license": "(MIT OR Apache-2.0)",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "main": "./dist/main",
+  "contributes": {
+    "languages": [
+      {
+        "id": "esmeta_ir",
+        "extensions": [
+          ".ir"
+        ],
+        "aliases": [
+          "ESMeta IR"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "esbuild ./src/extension.ts --bundle --outfile=./dist/main.js --external:vscode --format=cjs --platform=node"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^8.1.0",
+    "vscode-languageserver": "^8.1.0",
+    "vscode-languageserver-textdocument": "^1.0.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.7",
+    "@types/vscode": "^1.81.0",
+    "esbuild": "^0.19.2",
+    "vscode-test": "^1.6.1"
+  }
+}
