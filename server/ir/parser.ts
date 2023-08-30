@@ -14,7 +14,7 @@ interface ParseResult {
 }
 
 export function parse(text: string): ParseResult {
-  const parser = createRecursiveDescentParser(text, {debug: true});
+  const parser = createRecursiveDescentParser(text);
   const funcs = acceptFuncs(parser);
   const ast = { funcs };
   return { ast, parser };
@@ -59,7 +59,7 @@ function acceptFunc(parser: Parser): ast.Func | undefined {
 }
 
 function expectFuncKind(parser: Parser): Token {
-  return parser.accept(/<\w+>/) || parser.expect("");
+  return parser.accept(/^<\w+>/) || parser.expect("");
 }
 
 function expectFuncName(parser: Parser): Token {
@@ -101,6 +101,7 @@ function expectInsts(parser: Parser): ast.Inst[] {
   const insts: ast.Inst[] = [];
   while (true) {
     skipWsAndSweepComments(parser);
+    if (parser.try("}")) break; // trick: early return on end of blocks
     const inst = acceptInst(parser);
     if (!inst) break;
     insts.push(inst);
@@ -609,7 +610,7 @@ function acceptEUnary(parser: Parser): ast.EUnary | undefined {
 function acceptEBinary(parser: Parser): ast.EBinary | undefined {
   const loc = parser.loc;
   const head = parser.accept("(");
-  const bop = parser.accept(/^(\+|-|\*|\/|%|=|&|\||\^|<|>)/);
+  const bop = parser.accept(/^(\+|-|\*|\/|%|=|&|\||\^|<|>)+/);
   if (!head || !bop) {
     parser.loc = loc;
     return;
