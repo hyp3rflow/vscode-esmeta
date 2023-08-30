@@ -49,7 +49,7 @@ export interface ILet extends Span {
 }
 export interface IAssign extends Span {
   type: "assign";
-  ref: Token;
+  ref: ERef;
   expr: Expr;
 }
 export interface IDelete extends Span {
@@ -91,14 +91,14 @@ export interface ICall extends Span {
 export interface IMethodCall extends Span {
   type: "method-call";
   lhs: Token;
-  base: Token;
+  base: ERef;
   method: Token;
   args: Args;
 }
 export interface ISDOCall extends Span {
   type: "sdo-call";
   lhs: Token;
-  base: Token;
+  base: Expr;
   method: Token;
   args: Args;
 }
